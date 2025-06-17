@@ -1,18 +1,18 @@
 # Core processing
-pyspark
-polars
-pandas
-pyarrow
+pyspark==4.0.0
+polars==1.30.0
+pandas==2.3.0
+pyarrow==20.0.0
 
 # Feature engineering & clustering
-scikit-learn
-numpy
-scipy
+scikit-learn==1.7.0
+numpy==2.3.0
+scipy==1.15.3
 
 # Evaluation & visualisation
-matplotlib
-seaborn
+matplotlib==3.10.3
+seaborn==0.13.2
 
 # Dev / utils
-ipykernel
-tqdm
+ipykernel==6.29.5
+tqdm==4.67.1
