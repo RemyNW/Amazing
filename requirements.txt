@@ -1,0 +1,18 @@
+# Core processing
+pyspark
+polars
+pandas
+pyarrow
+
+# Feature engineering & clustering
+scikit-learn
+numpy
+scipy
+
+# Evaluation & visualisation
+matplotlib
+seaborn
+
+# Dev / utils
+ipykernel
+tqdm
