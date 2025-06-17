@@ -16,3 +16,4 @@ seaborn==0.13.2
 # Dev / utils
 ipykernel==6.29.5
 tqdm==4.67.1
+dotenv==0.9.9

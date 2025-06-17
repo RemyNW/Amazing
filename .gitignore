@@ -8,7 +8,6 @@ __pycache__/
 .venv/
 venv/
 *.sqlite3
-.python-version
 
 # ── Jupyter ────────────────────────────
 .ipynb_checkpoints/
@@ -24,14 +23,14 @@ outputs/
 data/tmp/
 
 # ── Data files ─────────────────────────
-data/*.csv
-data/*.csv.gz
-data/*.parquet
-data/*.json
-data/raw/
-data/bronze/
-data/silver/
-data/gold/
+src/data/*.csv
+src/data/*.csv.gz
+src/data/*.parquet
+src/data/*.json
+src/data/raw/
+src/data/bronze/
+src/data/silver/
+src/data/gold/
 
 # ── VS Code ────────────────────────────
 .vscode/
