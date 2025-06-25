@@ -1,0 +1,644 @@
+= Feature Engineering Implementation for User Segmentation
+:toc:
+:toclevels: 3
+:sectnums:
+:icons: font
+:source-highlighter: rouge
+
+== Executive Summary
+
+This document describes the actual implementation of the feature engineering pipeline for clustering users of an online marketplace. The implementation transforms event-based data into user-centric features that capture behavioral patterns, preferences, and engagement levels to enable effective customer segmentation.
+
+The pipeline is built using **Polars** for high-performance processing and implements a modular, class-based architecture with shared utility functions for efficiency and maintainability.
+
+== Architecture Overview
+
+=== Modular Design
+The feature engineering is implemented through the `FeatureEngineering` class with the following modular structure:
+
+* **Shared Utility Functions**: Reusable components for common calculations
+* **Category-Specific Methods**: Focused feature calculation for each behavioral aspect
+* **Unified Pipeline**: Single entry point for generating all features
+
+=== Performance Optimizations
+* **Pre-computed Event DataFrames**: Split by event type for reuse
+* **Shared Session Data**: Calculate session metrics once and reuse
+* **Price Percentile Caching**: Pre-calculate price thresholds for affinity features
+* **Memory Efficient Joins**: Left joins with all users to ensure complete feature coverage
+
+== Implemented Feature Categories
+
+=== 1. Engagement & Activity Features (14 features)
+
+==== Basic Activity Metrics
+[cols="2,3,1,2", options="header"]
+|===
+|Feature Name |Description |Type |Business Value
+
+|`total_events`
+|Total number of interactions per user
+|Integer
+|Primary engagement indicator
+
+|`unique_sessions`
+|Number of distinct sessions per user
+|Integer
+|Visit frequency patterns
+
+|`days_active`
+|Number of unique days with activity
+|Integer
+|Usage consistency measurement
+
+|`avg_events_per_session`
+|Average number of events per session
+|Float
+|Session depth measurement
+
+|`avg_session_duration_minutes`
+|Mean session duration in minutes
+|Float
+|Engagement intensity per visit
+
+|`session_duration_variance`
+|Standard deviation of session durations
+|Float
+|Session behavior consistency
+|===
+
+==== Behavioral Ratios
+[cols="2,3,1,2", options="header"]
+|===
+|Feature Name |Description |Type |Business Value
+
+|`view_ratio`
+|Percentage of view events
+|Float (%)
+|Browsing behavior indicator
+
+|`cart_ratio`
+|Percentage of cart events
+|Float (%)
+|Purchase consideration rate
+
+|`purchase_ratio`
+|Percentage of purchase events
+|Float (%)
+|Conversion efficiency
+
+|`cart_to_purchase_rate`
+|Cart to purchase conversion rate
+|Float (%)
+|Purchase decision rate
+
+|`view_to_purchase_rate`
+|View to purchase conversion rate
+|Float (%)
+|Overall conversion efficiency
+|===
+
+==== Temporal Activity Patterns
+[cols="2,3,1,2", options="header"]
+|===
+|Feature Name |Description |Type |Business Value
+
+|`peak_activity_hour`
+|Most frequent hour of activity (0-23)
+|Integer
+|User scheduling preferences
+
+|`peak_activity_weekday`
+|Most frequent day of week (0-6)
+|Integer
+|Weekly activity patterns
+
+|`activity_regularity`
+|Standard deviation of daily activity counts
+|Float
+|Behavioral predictability
+|===
+
+=== 2. Purchase Behavior Features (19 features)
+
+==== Transactional Metrics
+[cols="2,3,1,2", options="header"]
+|===
+|Feature Name |Description |Type |Business Value
+
+|`total_purchases`
+|Number of purchase events
+|Integer
+|Basic buying activity
+
+|`total_spend`
+|Sum of all purchase amounts
+|Float ($)
+|Revenue contribution
+
+|`avg_order_value`
+|Mean purchase amount per transaction
+|Float ($)
+|Spending per transaction
+
+|`median_order_value`
+|Median purchase amount
+|Float ($)
+|Typical purchase value
+
+|`price_sensitivity_score`
+|Standard deviation of purchase prices
+|Float
+|Price flexibility indicator
+
+|`min_purchase_price`
+|Lowest purchase amount
+|Float ($)
+|Budget floor
+
+|`max_purchase_price`
+|Highest purchase amount
+|Float ($)
+|Premium spending capability
+
+|`purchase_frequency_per_day`
+|Purchases per active day
+|Float
+|Buying intensity
+|===
+
+==== Diversity & Loyalty Metrics
+[cols="2,3,1,2", options="header"]
+|===
+|Feature Name |Description |Type |Business Value
+
+|`product_id_diversity_ratio`
+|Unique products / total purchase events
+|Float
+|Product exploration behavior
+
+|`category_id_diversity_ratio`
+|Unique categories / total purchase events
+|Float
+|Category exploration behavior
+
+|`brand_diversity_ratio`
+|Unique brands / total purchase events
+|Float
+|Brand loyalty vs exploration
+
+|`avg_purchases_per_product`
+|Average repeat purchases per product
+|Float
+|Product loyalty intensity
+
+|`is_repeat_purchaser`
+|Has more than one purchase (binary)
+|Integer (0/1)
+|Repeat customer indicator
+
+|`has_product_loyalty`
+|Purchased same product multiple times
+|Integer (0/1)
+|Product loyalty indicator
+
+|`purchase_span_days`
+|Days between first and last purchase
+|Integer
+|Customer lifetime span
+|===
+
+==== Price Affinity Features
+[cols="2,3,1,2", options="header"]
+|===
+|Feature Name |Description |Type |Business Value
+
+|`premium_product_affinity`
+|% of purchases in top 10% price range
+|Float (%)
+|Luxury preference indicator
+
+|`budget_product_affinity`
+|% of purchases in bottom 25% price range
+|Float (%)
+|Budget-conscious behavior
+
+|`discount_affinity`
+|% of purchases below normal product price
+|Float (%)
+|Deal-seeking behavior
+
+|`avg_discount_pct`
+|Average discount received on discounted purchases
+|Float (%)
+|Discount sensitivity level
+|===
+
+=== 3. Product Preference Features (7 features)
+
+==== Diversity Metrics
+[cols="2,3,1,2", options="header"]
+|===
+|Feature Name |Description |Type |Business Value
+
+|`category_id_diversity_ratio`
+|Unique categories / total events
+|Float
+|Category exploration breadth
+
+|`brand_diversity_ratio`
+|Unique brands / total events
+|Float
+|Brand exploration patterns
+
+|`product_id_diversity_ratio`
+|Unique products / total events
+|Float
+|Product discovery behavior
+|===
+
+==== Concentration & Conversion Metrics
+[cols="2,3,1,2", options="header"]
+|===
+|Feature Name |Description |Type |Business Value
+
+|`category_id_concentration`
+|Top category % of total activity
+|Float (%)
+|Category specialization level
+
+|`brand_concentration`
+|Top brand % of total activity
+|Float (%)
+|Brand loyalty concentration
+
+|`avg_purchase_price_overall`
+|Average price of purchased items
+|Float ($)
+|Price tier preference
+
+|`category_purchase_efficiency`
+|Purchases / unique viewed categories
+|Float
+|Category conversion efficiency
+|===
+
+=== 4. Temporal Behavior Features (15 features)
+
+==== Activity Timing Patterns
+[cols="2,3,1,2", options="header"]
+|===
+|Feature Name |Description |Type |Business Value
+
+|`peak_activity_hour`
+|Most frequent hour of activity
+|Integer (0-23)
+|Peak engagement timing
+
+|`peak_activity_weekday`
+|Most frequent day of week
+|Integer (0-6)
+|Weekly behavior pattern
+
+|`circular_mean_hour`
+|Circular mean of activity hours
+|Float
+|Average activity timing
+
+|`activity_hour_range`
+|Difference between max and min activity hours
+|Integer
+|Activity time spread
+
+|`unique_active_hours`
+|Number of unique hours with activity
+|Integer
+|Temporal diversity
+|===
+
+==== Activity Distribution
+[cols="2,3,1,2", options="header"]
+|===
+|Feature Name |Description |Type |Business Value
+
+|`weekday_activity_ratio`
+|% of activity on weekdays (Mon-Fri)
+|Float (%)
+|Work vs leisure patterns
+
+|`weekend_activity_ratio`
+|% of activity on weekends (Sat-Sun)
+|Float (%)
+|Weekend shopping behavior
+
+|`daily_activity_cv`
+|Coefficient of variation in daily activity
+|Float
+|Activity consistency
+
+|`total_active_days`
+|Total number of unique active days
+|Integer
+|Usage span measurement
+
+|`activity_span_days`
+|Days between first and last activity
+|Integer
+|Customer lifetime span
+|===
+
+==== Temporal Entropy Metrics
+[cols="2,3,1,2", options="header"]
+|===
+|Feature Name |Description |Type |Business Value
+
+|`hour_distribution_entropy`
+|Entropy of hourly activity distribution
+|Float
+|Temporal behavior diversity
+
+|`day_distribution_entropy`
+|Entropy of daily activity distribution
+|Float
+|Weekly pattern diversity
+
+|`peak_hour_concentration`
+|% of activity in peak hour
+|Float (%)
+|Activity concentration level
+
+|`peak_day_concentration`
+|% of activity in peak day
+|Float (%)
+|Day concentration level
+|===
+
+=== 5. RFM (Recency, Frequency, Monetary) Features (7 features)
+
+==== Classic RFM by Event Type
+For each event type (view, cart, purchase), the following features are calculated:
+
+[cols="2,3,1,2", options="header"]
+|===
+|Pattern |Description |Type |Business Value
+
+|`{event_type}_recency_days`
+|Days since last event of this type
+|Integer
+|Recent engagement measurement
+
+|`{event_type}_frequency_per_day`
+|Event frequency normalized by activity span
+|Float
+|Engagement intensity
+
+|`monetary_value`
+|Total spending (purchase events only)
+|Float ($)
+|Revenue contribution
+|===
+
+=== 6. Behavioral Features (22 features)
+
+==== Cart & Purchase Behavior
+[cols="2,3,1,2", options="header"]
+|===
+|Feature Name |Description |Type |Business Value
+
+|`abandoned_carts`
+|Number of cart events without purchase
+|Integer
+|Purchase hesitation indicator
+
+|`total_cart_events`
+|Total cart addition events
+|Integer
+|Purchase consideration activity
+
+|`cart_abandonment_rate`
+|% of cart events not leading to purchase
+|Float (%)
+|Conversion barrier measurement
+|===
+
+==== Research & Decision Patterns
+[cols="2,3,1,2", options="header"]
+|===
+|Feature Name |Description |Type |Business Value
+
+|`product_research_intensity`
+|Unique purchased products / unique viewed products
+|Float
+|Research behavior intensity
+
+|`purchase_to_browse_ratio`
+|Purchase events / view events
+|Float
+|Decision-making pattern
+
+|`product_exploration_rate`
+|Unique products / total events
+|Float
+|Discovery vs focused behavior
+|===
+
+==== Session Conversion Patterns
+[cols="2,3,1,2", options="header"]
+|===
+|Feature Name |Description |Type |Business Value
+
+|`total_sessions`
+|Total number of sessions
+|Integer
+|Visit frequency
+
+|`session_conversion_rate`
+|% of sessions with purchases
+|Float (%)
+|Session effectiveness
+|===
+
+==== Browse-to-Buy Timing
+[cols="2,3,1,2", options="header"]
+|===
+|Feature Name |Description |Type |Business Value
+
+|`avg_browse_to_buy_minutes`
+|Average time from first view to purchase
+|Float
+|Decision speed
+
+|`median_browse_to_buy_minutes`
+|Median time from first view to purchase
+|Float
+|Typical decision time
+
+|`quick_decision_rate`
+|% of purchases within 60 minutes of first view
+|Float (%)
+|Impulse buying tendency
+
+|`researched_purchases`
+|Number of purchases with prior views
+|Integer
+|Research-based buying
+|===
+
+==== Multi-Session Journey
+[cols="2,3,1,2", options="header"]
+|===
+|Feature Name |Description |Type |Business Value
+
+|`total_purchase_sessions`
+|Sessions containing purchases
+|Integer
+|Purchase session frequency
+
+|`research_purchase_sessions`
+|Purchase sessions with prior views
+|Integer
+|Research-based purchases
+
+|`multi_session_journey_rate`
+|% of purchase sessions with research
+|Float (%)
+|Journey complexity
+|===
+
+==== Inter-Session Return Patterns
+[cols="2,3,1,2", options="header"]
+|===
+|Feature Name |Description |Type |Business Value
+
+|`avg_inter_session_gap_hours`
+|Average hours between sessions
+|Float
+|Return frequency pattern
+
+|`median_inter_session_gap_hours`
+|Median hours between sessions
+|Float
+|Typical return time
+
+|`inter_session_gap_variance`
+|Standard deviation of session gaps
+|Float
+|Return pattern consistency
+
+|`session_transitions`
+|Number of session-to-session transitions
+|Integer
+|Visit frequency indicator
+
+|`same_day_return_rate`
+|% of returns within 24 hours
+|Float (%)
+|Same-day shopping behavior
+
+|`weekly_return_rate`
+|% of returns after 1 week
+|Float (%)
+|Long-term engagement pattern
+|===
+
+== Implementation Details
+
+=== Shared Utility Functions
+
+The implementation includes several shared utility functions for code reuse and consistency:
+
+[cols="2,3", options="header"]
+|===
+|Function |Purpose
+
+|`get_event_type_dataframes()`
+|Split dataframe by event type for reuse
+
+|`calculate_diversity_ratios()`
+|Calculate normalized diversity ratios
+
+|`calculate_concentration_ratios()`
+|Calculate concentration ratios (top item %)
+
+|`calculate_event_type_ratios()`
+|Calculate ratios for different event types
+
+|`calculate_conversion_rates()`
+|Calculate conversion rates between event types
+
+|`calculate_recency_features()`
+|Calculate recency features for event types
+
+|`calculate_entropy()`
+|Calculate entropy of distributions
+
+|`join_user_features()`
+|Join multiple feature dataframes to all users
+|===
+
+=== Data Processing Pipeline
+
+1. **Initialization**: Create event type dataframes and shared components
+2. **Feature Calculation**: Execute each feature category method
+3. **Error Handling**: Graceful error handling with detailed logging
+4. **Feature Combination**: Left join all features to ensure complete user coverage
+5. **Null Handling**: Fill missing values with appropriate defaults
+
+=== Performance Characteristics
+
+* **Memory Efficient**: Uses Polars lazy evaluation where possible
+* **Scalable**: Modular design allows for easy feature addition/removal
+* **Robust**: Comprehensive error handling and null value management
+* **Fast**: Pre-computed shared components reduce redundant calculations
+
+== Feature Summary by Category
+
+[cols="2,1,3", options="header"]
+|===
+|Category |Count |Key Insights
+
+|**Engagement** |14 |Activity level, session depth, temporal preferences
+
+|**Purchase** |19 |Spending patterns, price sensitivity, loyalty indicators
+
+|**Product Preference** |7 |Category/brand exploration vs specialization
+
+|**Temporal** |15 |Activity timing, consistency, distribution patterns
+
+|**RFM** |7 |Recency, frequency by event type, monetary value
+
+|**Behavioral** |21 |Decision patterns, research intensity, journey complexity, return behavior
+
+|**Total** |**83** |Comprehensive behavioral characterization
+|===
+
+== Expected Segmentation Outcomes
+
+The comprehensive feature set enables identification of distinct user segments:
+
+* **High-Value Customers**: High monetary, frequent purchases, diverse interests
+* **Bargain Hunters**: High discount affinity, price-sensitive behavior
+* **Research-Heavy Browsers**: High view activity, long browse-to-buy times
+* **Loyal Specialists**: High category/brand concentration, repeat purchases
+* **Impulse Buyers**: Quick decision rates, low research intensity
+* **Occasional Shoppers**: Low frequency, high inter-session gaps
+* **New/Declining Users**: High recency values, declining activity patterns
+
+== Usage Instructions
+
+[source,python]
+----
+from feature_engineering import FeatureEngineering
+
+# Initialize with your polars DataFrame
+fe = FeatureEngineering(df_filtered)
+
+# Generate all features
+master_features = fe.calculate_all_features()
+
+# Or generate specific feature categories
+engagement_features = fe.calculate_engagement_features()
+purchase_features = fe.calculate_purchase_features()
+# ... etc
+----
+
+This modular approach allows for flexible feature generation based on specific analysis needs while maintaining consistency and performance.
