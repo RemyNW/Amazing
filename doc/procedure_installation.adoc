@@ -1,0 +1,45 @@
+= Procédure d'installation
+
+== Installation de Python (Ubuntu)
+
+[source, shell]
+----
+sudo apt update
+sudo apt install python3.10
+----
+
+== Récupération du repository
+
+Cloner ce repository :
+[source, shell]
+----
+git clone git@github.com:RemyNW/Amazing.git
+----
+
+Se mettre dans le dossier `Amazing` :
+[source, shell]
+----
+cd Amazing
+----
+
+== Mise en place de l'environnement
+
+Initialiser l'environnement virtuel et se déplacer dans le dossier `Amazing` :
+[source, shell]
+----
+pip install pyenv && pyenv virtualenv 3.12.10 amazing && echo "amazing" > Amazing/.python-version && cd Amazing
+----
+
+=== Variables d'environnement et libairies python
+
+Copier le template d'environnement est le remplir avec les paramètres souhaités +
+[source, shell]
+----
+cp .env.template .env && sed -i "s|PATH_DATA=.*|PATH_DATA=$(pwd)/src/data|" .env
+----
+
+Installer les librairies python :
+[source, shell]
+----
+pip install -r requirements.txt
+----
