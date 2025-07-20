@@ -5,7 +5,11 @@ parquet_dir = './src/data/bronze'
 parquet_files = sorted([os.path.join(parquet_dir, f) for f in os.listdir(parquet_dir)])
 
 # création d'un nouveau fichier parquet silver à partir des fichiers bronze
-output_silver_parquet = './src/data/silver/2019-events.parquet'
+year = 2019
+month = '*' # * pour tous les mois
+output_silver_parquet = f'./src/data/silver/{year}-{month if month != "*" else "all"}-events.parquet'
+
+nb_max_events = 4
 
 con = duckdb.connect()
 
@@ -14,12 +18,12 @@ con = duckdb.connect()
 con.execute(f"""
     COPY (
         SELECT *
-        FROM parquet_scan('{parquet_dir}/2019*.parquet')
+        FROM parquet_scan('{parquet_dir}/{year}-*.parquet')
         WHERE user_id IN (
             SELECT user_id
-            FROM parquet_scan('{parquet_dir}/2019*.parquet')
+            FROM parquet_scan('{parquet_dir}/{year}-*.parquet')
             GROUP BY user_id
-            HAVING COUNT(*) >= 4
+            HAVING COUNT(*) >= {nb_max_events}
         )
         AND price > 0
     )
