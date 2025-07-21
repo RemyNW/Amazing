@@ -13,7 +13,6 @@ Ce document décrit l'implémentation de l'ingénierie des features pour le clus
 
 === 1. Features Transactionnelles
 
-==== Métriques Transactionnelles
 [cols="2,3,1,2", options="header"]
 |===
 |Nom de la Feature |Description |Type |Valeur Métier
@@ -51,7 +50,6 @@ Ce document décrit l'implémentation de l'ingénierie des features pour le clus
 
 === 2. Features d'Affinité aux Prix
 
-==== Métriques d'Affinité
 [cols="2,3,1,2", options="header"]
 |===
 |Nom de la Feature |Description |Type |Valeur Métier
@@ -79,7 +77,6 @@ Ce document décrit l'implémentation de l'ingénierie des features pour le clus
 
 === 3. Features de Retour entre Sessions
 
-==== Modèles de Retour
 [cols="2,3,1,2", options="header"]
 |===
 |Nom de la Feature |Description |Type |Valeur Métier
