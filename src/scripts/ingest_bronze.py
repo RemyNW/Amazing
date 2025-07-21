@@ -6,7 +6,7 @@ import time
 from tqdm import tqdm
 import gc
 
-input_folder = "/data/raw"
+input_folder = "/data/source"
 output_folder = "/data/bronze"
 
 # Create output folder if it doesn't exist
