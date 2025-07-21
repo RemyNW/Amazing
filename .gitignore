@@ -27,7 +27,7 @@ src/data/*.csv
 src/data/*.csv.gz
 src/data/*.parquet
 src/data/*.json
-src/data/raw/
+src/data/source/
 src/data/bronze/
 src/data/silver/
 src/data/gold/

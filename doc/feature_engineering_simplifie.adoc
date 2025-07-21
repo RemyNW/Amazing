@@ -1,0 +1,111 @@
+= Implémentation de l'Ingénierie des Features pour la Segmentation des Utilisateurs
+:toc:
+:toclevels: 3
+:sectnums:
+:icons: font
+:source-highlighter: rouge
+
+== Résumé Exécutif
+
+Ce document décrit l'implémentation de l'ingénierie des features pour le clustering des utilisateurs d'une marketplace en ligne. L'objectif est de transformer des données basées sur des événements en features centrées sur les utilisateurs, capturant leurs comportements, préférences et niveaux d'engagement pour permettre une segmentation efficace.
+
+== Catégories de Features Implémentées
+
+=== 1. Features Transactionnelles
+
+==== Métriques Transactionnelles
+[cols="2,3,1,2", options="header"]
+|===
+|Nom de la Feature |Description |Type |Valeur Métier
+
+|`total_purchases`
+|Nombre total d'événements "purchase" effectués par un utilisateur
+|Entier
+|Indicateur d'activité d'achat
+
+|`total_spend`
+|Somme totale des montants dépensés par un utilisateur lors de ses achats
+|Flottant (€)
+|Contribution au revenu
+
+|`median_order_value`
+|Valeur médiane des montants dépensés par un utilisateur lors de ses achats
+|Flottant (€)
+|Valeur typique des achats
+
+|`price_sensitivity_score`
+|Écart-type des prix des produits achetés par un utilisateur
+|Flottant
+|Indicateur de flexibilité des prix
+
+|`purchase_frequency_per_day`
+|Fréquence moyenne des achats par jour pour un utilisateur
+|Flottant
+|Intensité d'achat
+
+|`price_range`
+|Différence entre le prix maximum et le prix minimum des produits achetés
+|Flottant (€)
+|Diversité des préférences de prix
+|===
+
+=== 2. Features d'Affinité aux Prix
+
+==== Métriques d'Affinité
+[cols="2,3,1,2", options="header"]
+|===
+|Nom de la Feature |Description |Type |Valeur Métier
+
+|`premium_product_affinity`
+|Pourcentage des achats effectués dans le top 10% des prix les plus élevés
+|Flottant (%)
+|Indicateur de préférence pour les produits haut de gamme
+
+|`budget_product_affinity`
+|Pourcentage des achats effectués dans le bottom 25% des prix les plus bas
+|Flottant (%)
+|Indicateur de préférence pour les produits économiques
+
+|`discount_affinity`
+|Pourcentage des achats effectués en dessous du prix normal du produit
+|Flottant (%)
+|Indicateur de sensibilité aux promotions
+
+|`avg_discount_pct`
+|Pourcentage moyen de réduction appliqué sur les achats effectués
+|Flottant (%)
+|Niveau de sensibilité aux réductions
+|===
+
+=== 3. Features de Retour entre Sessions
+
+==== Modèles de Retour
+[cols="2,3,1,2", options="header"]
+|===
+|Nom de la Feature |Description |Type |Valeur Métier
+
+|`median_inter_session_gap_hours`
+|Médiane des écarts (en heures) entre deux sessions consécutives
+|Flottant
+|Fréquence de retour
+
+|`inter_session_gap_variance`
+|Variance des écarts entre deux sessions consécutives
+|Flottant
+|Régularité des retours
+
+|`session_transitions`
+|Nombre de transitions entre sessions
+|Entier
+|Indicateur de fréquence de visite
+
+|`same_day_return_rate`
+|Pourcentage de retours sur le site dans les 24 heures suivant une session précédente
+|Flottant (%)
+|Comportement d'achat impulsif
+
+|`weekly_return_rate`
+|Pourcentage de retours sur le site après une semaine ou plus
+|Flottant (%)
+|Engagement à long terme
+|===

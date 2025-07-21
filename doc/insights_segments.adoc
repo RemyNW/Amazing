@@ -1,0 +1,261 @@
+= Analyse des Segments Utilisateurs
+:toc:
+:toclevels: 3
+:sectnums:
+:icons: font
+:source-highlighter: rouge
+
+== Catégorie "inter_session"
+
+=== Segments Obtenus
+
+[cols="1,1,1,1,1,1,1", options="header"]
+|===
+|Cluster |Nombre d'utilisateurs |Écart médian entre sessions (heures) |Variance des écarts |Transitions entre sessions |Taux de retour le jour même |Taux de retour hebdomadaire
+
+|0 |574484 |82.39 |221.89 |11.56 |30.82% |29.89%
+|1 |110402 |27.73 |84.13 |44.26 |49.61% |8.46%
+|2 |41870 |1353.19 |40.76 |1.15 |0.00% |100.00%
+|3 |248252 |349.15 |195.90 |3.67 |4.28% |77.75%
+|4 |338442 |22.99 |9.68 |0.82 |1.73% |1.29%
+|5 |183424 |16.84 |55.56 |6.07 |74.58% |4.39%
+|6 |105812 |433.35 |744.00 |3.46 |18.75% |56.86%
+|===
+
+=== Interprétation
+
+==== Cluster 0 – Explorateurs réguliers
+
+* **Écart médian modéré (82.39 heures)** et **variance élevée (221.89)**
+* **Nombre moyen de transitions (11.56)**
+* **Taux de retour équilibré : 30.82% (jour même), 29.89% (hebdomadaire)**
+
+Ces utilisateurs reviennent régulièrement sur le site avec des écarts modérés entre les sessions. Ils explorent activement mais sans comportement impulsif.
+
+==== Cluster 1 – Acheteurs impulsifs
+
+* **Écart médian court (27.73 heures)** et **faible variance (84.13)**
+* **Nombre élevé de transitions (44.26)**
+* **Taux de retour élevé : 49.61% (jour même)**
+
+Ces utilisateurs reviennent fréquemment et rapidement, souvent motivés par des achats impulsifs ou des offres attractives.
+
+==== Cluster 2 – Clients occasionnels
+
+* **Écart médian très long (1353.19 heures)** et **faible variance (40.76)**
+* **Nombre minimal de transitions (1.15)**
+* **Taux de retour hebdomadaire élevé (100%)**
+
+Ces utilisateurs reviennent rarement, souvent après une longue période, et montrent peu d'engagement.
+
+==== Cluster 3 – Visiteurs sporadiques
+
+* **Écart médian important (349.15 heures)** et **variance modérée (195.90)**
+* **Nombre faible de transitions (3.67)**
+* **Taux de retour hebdomadaire élevé (77.75%)**
+
+Ces utilisateurs visitent sporadiquement, souvent pour des besoins spécifiques ou des achats planifiés.
+
+==== Cluster 4 – Nouveaux visiteurs
+
+* **Écart médian très court (22.99 heures)** et **faible variance (9.68)**
+* **Nombre minimal de transitions (0.82)**
+* **Taux de retour faible : 1.73% (jour même)**
+
+Ces utilisateurs sont probablement nouveaux sur le site et explorent sans s'engager pleinement.
+
+==== Cluster 5 – Fidèles actifs
+
+* **Écart médian très court (16.84 heures)** et **variance modérée (55.56)**
+* **Nombre moyen de transitions (6.07)**
+* **Taux de retour élevé : 74.58% (jour même)**
+
+Ces utilisateurs sont très engagés et reviennent fréquemment, souvent pour des achats réguliers.
+
+==== Cluster 6 – Acheteurs planifiés
+
+* **Écart médian long (433.35 heures)** et **variance élevée (744.00)**
+* **Nombre faible de transitions (3.46)**
+* **Taux de retour hebdomadaire élevé (56.86%)**
+
+Ces utilisateurs planifient leurs visites et achats, revenant souvent à intervalles réguliers.
+
+=== Actions Stratégiques Recommandées
+
+* **Cluster 0 :** Proposer des recommandations personnalisées pour maintenir leur engagement.
+* **Cluster 1 :** Mettre en avant des offres flash ou des promotions limitées dans le temps.
+* **Cluster 2 :** Réengager avec des campagnes de retargeting ou des offres spéciales.
+* **Cluster 3 :** Identifier leurs besoins spécifiques et leur envoyer des recommandations ciblées.
+* **Cluster 4 :** Convertir en acheteurs réguliers avec des offres de bienvenue.
+* **Cluster 5 :** Récompenser leur fidélité avec des programmes exclusifs.
+* **Cluster 6 :** Proposer des rappels ou des offres récurrentes alignées sur leur comportement planifié.
+
+== Catégorie "transactional"
+
+=== Segments Obtenus
+
+[cols="1,1,1,1,1,1,1", options="header"]
+|===
+|Cluster |Nombre d'utilisateurs |Achats totaux moyens |Dépenses totales moyennes |Valeur médiane des commandes |Sensibilité au prix (écart-type) |Écart de prix moyen
+
+|0 |440185 |2.37 |$519.20 |$267.58 |27.93 |51.55
+|1 |51274 |5.27 |$3351.74 |$628.23 |556.35 |1114.47
+|2 |865218 |0.88 |$71.30 |$52.59 |3.12 |5.24
+|3 |12864 |35.84 |$14046.68 |$447.61 |247.96 |923.96
+|4 |100927 |1.59 |$1615.61 |$1023.16 |18.56 |32.40
+|5 |131144 |6.26 |$1804.91 |$297.32 |219.80 |466.83
+|6 |29 |495.48 |$300349.59 |$747.64 |298.73 |1553.83
+|7 |1045 |118.43 |$56556.74 |$571.63 |289.35 |1279.92
+|===
+
+=== Interprétation
+
+==== Cluster 0 – Acheteurs modérés
+
+* **Achats totaux moyens (2.37)** et **dépenses modérées ($519.20)**
+* **Valeur médiane des commandes ($267.58)**
+* **Sensibilité au prix faible (27.93)**
+
+Ces utilisateurs effectuent des achats occasionnels avec des dépenses modérées, souvent pour des produits standards.
+
+==== Cluster 1 – Gros dépensiers
+
+* **Achats totaux moyens élevés (5.27)** et **dépenses très élevées ($3351.74)**
+* **Valeur médiane des commandes élevée ($628.23)**
+* **Sensibilité au prix très élevée (556.35)**
+
+Ces utilisateurs achètent fréquemment des produits haut de gamme ou en grande quantité, montrant une forte sensibilité au prix.
+
+==== Cluster 2 – Acheteurs occasionnels
+
+* **Peu d'achats totaux moyens (0.88)** et **faibles dépenses ($71.30)**
+* **Valeur médiane des commandes basse ($52.59)**
+* **Sensibilité au prix très faible (3.12)**
+
+Ces utilisateurs effectuent des achats très occasionnels, montrant peu d'engagement et de sensibilité au prix.
+
+==== Cluster 3 – Super acheteurs
+
+* **Achats totaux moyens très élevés (35.84)** et **dépenses très élevées ($14046.68)**
+* **Valeur médiane des commandes élevée ($447.61)**
+* **Sensibilité au prix élevée (247.96)**
+
+Ces utilisateurs sont des acheteurs très fréquents et dépensiers, probablement intéressés par des produits spécifiques ou des catégories de luxe.
+
+==== Cluster 4 – Acheteurs de luxe
+
+* **Peu d'achats totaux moyens (1.59)** mais **dépenses élevées ($1615.61)**
+* **Valeur médiane des commandes très élevée ($1023.16)**
+* **Sensibilité au prix faible (18.56)**
+
+Ces utilisateurs achètent rarement mais dépensent beaucoup, probablement pour des produits de luxe ou haut de gamme.
+
+==== Cluster 5 – Acheteurs réguliers
+
+* **Achats totaux moyens (6.26)** et **dépenses modérées ($1804.91)**
+* **Valeur médiane des commandes ($297.32)**
+* **Sensibilité au prix élevée (219.80)**
+
+Ces utilisateurs effectuent des achats réguliers avec une sensibilité au prix modérée à élevée.
+
+==== Cluster 6 – Ultra acheteurs
+
+* **Achats totaux moyens exceptionnellement élevés (495.48)** et **dépenses très élevées ($300349.59)**
+* **Valeur médiane des commandes élevée ($747.64)**
+* **Sensibilité au prix très élevée (298.73)**
+
+Ces utilisateurs sont des acheteurs exceptionnels, effectuant des achats en très grande quantité et dépensant des sommes importantes.
+
+==== Cluster 7 – Acheteurs intensifs
+
+* **Achats totaux moyens très élevés (118.43)** et **dépenses très élevées ($56556.74)**
+* **Valeur médiane des commandes élevée ($571.63)**
+* **Sensibilité au prix élevée (289.35)**
+
+Ces utilisateurs effectuent un grand nombre d'achats avec des dépenses élevées, montrant une forte sensibilité au prix.
+
+=== Actions Stratégiques Recommandées
+
+* **Cluster 0 :** Proposer des promotions sur des produits similaires pour augmenter leur panier moyen.
+* **Cluster 1 :** Offrir des avantages VIP ou des recommandations premium.
+* **Cluster 2 :** Réengager avec des offres ciblées ou des réductions.
+* **Cluster 3 :** Fidéliser avec des programmes exclusifs ou des offres personnalisées.
+* **Cluster 4 :** Proposer des produits haut de gamme ou des services personnalisés.
+* **Cluster 5 :** Maintenir leur engagement avec des promotions régulières.
+* **Cluster 6 :** Offrir des avantages exclusifs et des services premium.
+* **Cluster 7 :** Proposer des abonnements ou des offres groupées pour maximiser leur valeur.
+
+== Catégorie "price_affinity"
+
+=== Segments Obtenus
+
+[cols="1,1,1,1,1,1", options="header"]
+|===
+|Cluster |Nombre d'utilisateurs |Affinité produits premium |Affinité produits économiques |Affinité pour les promotions |Pourcentage moyen de réduction
+
+|0 |299722 |1.81% |1.85% |85.59% |3.21%
+|1 |238336 |0.22% |90.91% |2.03% |0.08%
+|2 |800277 |0.58% |1.50% |2.62% |0.15%
+|3 |108026 |86.67% |2.37% |38.79% |1.76%
+|4 |45067 |2.08% |57.82% |68.91% |17.68%
+|5 |111258 |1.26% |74.85% |67.73% |4.45%
+|===
+
+=== Interprétation
+
+==== Cluster 0 – Chasseurs de promotions
+
+* **Affinité élevée pour les promotions (85.59%)**
+* **Faible affinité pour les produits premium (1.81%)**
+* **Réductions moyennes modérées (3.21%)**
+
+Ces utilisateurs recherchent activement des promotions et des remises, montrant une forte sensibilité aux prix réduits.
+
+==== Cluster 1 – Acheteurs économiques
+
+* **Affinité élevée pour les produits économiques (90.91%)**
+* **Faible affinité pour les promotions (2.03%)**
+* **Réductions moyennes très faibles (0.08%)**
+
+Ces utilisateurs privilégient les produits à bas prix sans dépendre des promotions.
+
+==== Cluster 2 – Indifférents au prix
+
+* **Affinité faible pour les produits premium (0.58%)**
+* **Affinité faible pour les produits économiques (1.50%)**
+* **Affinité faible pour les promotions (2.62%)**
+
+Ces utilisateurs montrent peu de sensibilité au prix ou aux promotions, se concentrant probablement sur d'autres critères.
+
+==== Cluster 3 – Amateurs de produits premium
+
+* **Affinité très élevée pour les produits premium (86.67%)**
+* **Affinité modérée pour les promotions (38.79%)**
+* **Réductions moyennes faibles (1.76%)**
+
+Ces utilisateurs préfèrent les produits haut de gamme et sont moins sensibles aux réductions.
+
+==== Cluster 4 – Acheteurs mixtes
+
+* **Affinité modérée pour les produits premium (2.08%)**
+* **Affinité élevée pour les produits économiques (57.82%)**
+* **Affinité élevée pour les promotions (68.91%)**
+
+Ces utilisateurs achètent à la fois des produits premium et économiques, souvent en profitant des promotions.
+
+==== Cluster 5 – Acheteurs sensibles aux promotions
+
+* **Affinité élevée pour les produits économiques (74.85%)**
+* **Affinité élevée pour les promotions (67.73%)**
+* **Réductions moyennes modérées (4.45%)**
+
+Ces utilisateurs recherchent activement des promotions sur des produits économiques.
+
+=== Actions Stratégiques Recommandées
+
+* **Cluster 0 :** Mettre en avant les promotions et les remises pour maximiser leur engagement.
+* **Cluster 1 :** Proposer des produits abordables ou des packs économiques.
+* **Cluster 2 :** Mettre en avant la qualité ou les caractéristiques uniques des produits.
+* **Cluster 3 :** Proposer des produits premium ou des services exclusifs.
+* **Cluster 4 :** Proposer des offres combinées ou des recommandations variées.
+* **Cluster 5 :** Mettre en avant les promotions et les remises importantes pour maximiser leur engagement.

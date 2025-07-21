@@ -1,0 +1,387 @@
+= Annexe - Détail des Métriques d'Analyse
+:toc:
+:toclevels: 3
+:sectnums:
+:icons: font
+:source-highlighter: rouge
+
+== Table des Matières
+
+1. Métriques de Qualité par Catégorie
+2. Évolution Temporelle des Métriques
+3. Distribution des Clusters par Période
+4. Analyse de Stabilité des Distributions
+5. Métriques de Migration des Utilisateurs
+6. Glossaire des Métriques
+
+== 1. Métriques de Qualité par Catégorie
+
+=== Tableau Récapitulatif Général
+
+[cols="1,1,1,1,1,1,1", options="header"]
+|===
+|Catégorie |Nb Clusters |Nb Utilisateurs |Silhouette Score |Davies-Bouldin |Calinski-Harabasz |Échantillon Silhouette
+
+|**Inter Session** |7 |1,602,686 |0.4062 |0.8679 |767,529 |49,994
+|**Transactional** |8 |1,602,686 |0.3008 |0.8983 |769,594 |38,574
+|**Price Affinity** |6 |1,602,686 |0.4960 |0.8452 |1,380,970 |49,998
+|===
+
+=== Distribution des Clusters - Période Oct-Jan
+
+==== Inter Session
+
+[cols="1,1,1,1", options="header"]
+|===
+|Cluster |Nombre d'Utilisateurs |Pourcentage |Description Comportementale
+
+|0 |574,484 |35.8% |Explorateurs réguliers
+|1 |110,402 |6.9% |Acheteurs impulsifs
+|2 |41,870 |2.6% |Clients occasionnels
+|3 |248,252 |15.5% |Visiteurs sporadiques
+|4 |338,442 |21.1% |Nouveaux visiteurs
+|5 |183,424 |11.4% |Fidèles actifs
+|6 |105,812 |6.6% |Acheteurs planifiés
+|===
+
+==== Transactional
+
+[cols="1,1,1,1", options="header"]
+|===
+|Cluster |Nombre d'Utilisateurs |Pourcentage |Description Comportementale
+
+|0 |440,185 |27.5% |Acheteurs modérés
+|1 |51,274 |3.2% |Gros dépensiers
+|2 |865,218 |54.0% |Acheteurs occasionnels
+|3 |12,864 |0.8% |Super acheteurs
+|4 |100,927 |6.3% |Acheteurs de luxe
+|5 |131,144 |8.2% |Acheteurs réguliers
+|6 |29 |0.0% |Ultra acheteurs
+|7 |1,045 |0.1% |Acheteurs intensifs
+|===
+
+==== Price Affinity
+
+[cols="1,1,1,1", options="header"]
+|===
+|Cluster |Nombre d'Utilisateurs |Pourcentage |Description Comportementale
+
+|0 |299,722 |18.7% |Chasseurs de promotions
+|1 |238,336 |14.9% |Acheteurs économiques
+|2 |800,277 |49.9% |Acheteurs standards
+|3 |108,026 |6.7% |Acheteurs premium
+|4 |45,067 |2.8% |Chasseurs de bonnes affaires
+|5 |111,258 |6.9% |Acheteurs mixtes
+|===
+
+== 2. Évolution Temporelle des Métriques
+
+=== Inter Session - Évolution Complète
+
+[cols="1,1,1,1,1,1,1", options="header"]
+|===
+|Période |Nb Clusters |Nb Utilisateurs |Silhouette |Davies-Bouldin |Calinski-Harabasz |Échantillon
+
+|2019-Oct_2020-Jan |7 |1,602,686 |0.4056 |0.8679 |767,529 |49,994
+|2019-Nov_2020-Feb |8 |1,657,929 |0.4007 |0.8899 |820,988 |49,995
+|2019-Dec_2020-Mar |7 |1,660,520 |0.4148 |0.8589 |806,342 |49,995
+|2020-Jan_2020-Apr |7 |1,655,865 |0.4117 |0.8621 |805,003 |49,998
+|===
+
+**Tendances :**
+
+* Amélioration Silhouette : +1.5% (0.4056 → 0.4117)
+* Instabilité clusters : 7-8 clusters
+* Calinski-Harabasz : Amélioration puis stabilisation
+
+=== Transactional - Évolution Complète
+
+[cols="1,1,1,1,1,1,1", options="header"]
+|===
+|Période |Nb Clusters |Nb Utilisateurs |Silhouette |Davies-Bouldin |Calinski-Harabasz |Échantillon
+
+|2019-Oct_2020-Jan |8 |1,602,686 |0.3013 |0.8983 |769,594 |38,574
+|2019-Nov_2020-Feb |9 |1,657,929 |0.3071 |0.8876 |795,200 |41,354
+|2019-Dec_2020-Mar |8 |1,660,520 |0.3029 |0.9380 |802,637 |40,736
+|2020-Jan_2020-Apr |8 |1,655,865 |0.3187 |0.9060 |820,398 |41,256
+|===
+
+**Tendances :**
+
+* Amélioration Silhouette : +5.8% (0.3013 → 0.3187)
+* Instabilité clusters : 8-9 clusters
+* Davies-Bouldin : Détérioration puis amélioration
+
+=== Price Affinity - Évolution Complète
+
+[cols="1,1,1,1,1,1,1", options="header"]
+|===
+|Période |Nb Clusters |Nb Utilisateurs |Silhouette |Davies-Bouldin |Calinski-Harabasz |Échantillon
+
+|2019-Oct_2020-Jan |6 |1,602,686 |0.4927 |0.8452 |1,380,970 |49,998
+|2019-Nov_2020-Feb |5 |1,657,929 |0.5049 |0.7116 |1,427,232 |49,997
+|2019-Dec_2020-Mar |6 |1,660,520 |0.5033 |0.8348 |1,452,711 |49,997
+|2020-Jan_2020-Apr |6 |1,655,865 |0.5150 |0.8005 |1,549,365 |49,998
+|===
+
+**Tendances :**
+
+* Amélioration Silhouette : +4.5% (0.4927 → 0.5150)
+* Instabilité clusters : 5-6 clusters
+* Calinski-Harabasz : Amélioration continue (+12.2%)
+
+== 3. Distribution des Clusters par Période
+
+=== Inter Session - Distribution Temporelle (%)
+
+[cols="1,1,1,1,1,1", options="header"]
+|===
+|Cluster |Oct-Jan |Nov-Fév |Déc-Mar |Jan-Avr |Variation Max
+
+|0 |35.8% |35.0% |33.8% |33.2% |2.6%
+|1 |6.9% |6.7% |6.1% |5.4% |1.5%
+|2 |2.6% |2.8% |3.0% |3.0% |0.4%
+|3 |15.5% |15.2% |15.9% |15.7% |0.7%
+|4 |21.1% |21.5% |22.4% |23.0% |1.9%
+|5 |11.4% |11.7% |11.2% |11.6% |0.5%
+|6 |6.6% |7.2% |7.8% |8.1% |1.5%
+|===
+
+=== Transactional - Distribution Temporelle (%)
+
+[cols="1,1,1,1,1,1", options="header"]
+|===
+|Cluster |Oct-Jan |Nov-Fév |Déc-Mar |Jan-Avr |Variation Max
+
+|0 |27.5% |27.3% |27.8% |28.8% |1.5%
+|1 |3.2% |3.1% |3.2% |2.9% |0.3%
+|2 |54.0% |53.6% |52.8% |53.0% |1.2%
+|3 |0.8% |1.0% |1.0% |0.8% |0.2%
+|4 |6.3% |6.6% |6.8% |6.5% |0.5%
+|5 |8.2% |8.3% |8.3% |7.8% |0.5%
+|6 |0.0% |0.0% |0.0% |0.0% |0.0%
+|7 |0.1% |0.1% |0.1% |0.1% |0.0%
+|===
+
+=== Price Affinity - Distribution Temporelle (%)
+
+[cols="1,1,1,1,1,1", options="header"]
+|===
+|Cluster |Oct-Jan |Nov-Fév |Déc-Mar |Jan-Avr |Variation Max
+
+|0 |18.7% |19.1% |19.5% |19.6% |0.9%
+|1 |14.9% |14.9% |14.8% |15.5% |0.7%
+|2 |49.9% |49.5% |49.0% |47.9% |2.0%
+|3 |6.7% |6.8% |6.9% |6.8% |0.2%
+|4 |2.8% |2.8% |2.8% |3.4% |0.6%
+|5 |6.9% |6.9% |7.0% |6.9% |0.1%
+|===
+
+== 4. Analyse de Stabilité des Distributions
+
+=== Variance par Cluster et Catégorie
+
+#### Inter Session
+[cols="1,1,1,1", options="header"]
+|===
+|Cluster |Variance (%) |Écart-Type (%) |Niveau de Stabilité
+
+|0 |1.09 |1.04 |Stable
+|1 |0.31 |0.56 |Très Stable
+|2 |0.03 |0.18 |Très Stable
+|3 |0.07 |0.26 |Très Stable
+|4 |0.53 |0.73 |Stable
+|5 |0.03 |0.18 |Très Stable
+|6 |0.31 |0.55 |Très Stable
+|**Moyenne** |**0.34** |**0.50** |**TRÈS STABLE**
+|===
+
+#### Transactional
+[cols="1,1,1,1", options="header"]
+|===
+|Cluster |Variance (%) |Écart-Type (%) |Niveau de Stabilité
+
+|0 |0.36 |0.60 |Très Stable
+|1 |0.02 |0.12 |Très Stable
+|2 |0.23 |0.48 |Très Stable
+|3 |0.01 |0.09 |Très Stable
+|4 |0.03 |0.19 |Très Stable
+|5 |0.04 |0.21 |Très Stable
+|6 |0.00 |0.00 |Très Stable
+|7 |0.00 |0.01 |Très Stable
+|**Moyenne** |**0.09** |**0.21** |**TRÈS STABLE**
+|===
+
+#### Price Affinity
+[cols="1,1,1,1", options="header"]
+|===
+|Cluster |Variance (%) |Écart-Type (%) |Niveau de Stabilité
+
+|0 |0.12 |0.34 |Très Stable
+|1 |0.08 |0.29 |Très Stable
+|2 |0.62 |0.79 |Stable
+|3 |0.00 |0.06 |Très Stable
+|4 |0.06 |0.25 |Très Stable
+|5 |0.01 |0.07 |Très Stable
+|**Moyenne** |**0.15** |**0.30** |**TRÈS STABLE**
+|===
+
+=== Classement de Stabilité Globale
+
+[cols="1,1,1,1", options="header"]
+|===
+|Rang |Catégorie |Variance Moyenne |Niveau
+
+|1 |**Transactional** |0.09% |Exceptionnelle
+|2 |**Price Affinity** |0.15% |Très Stable
+|3 |**Inter Session** |0.34% |Très Stable
+|===
+
+== 5. Métriques de Migration des Utilisateurs
+
+=== Taux de Rétention par Transition
+
+#### Inter Session
+[cols="1,1,1,1", options="header"]
+|===
+|Transition |Utilisateurs Communs |Taux de Rétention |Niveau de Stabilité
+
+|Oct-Jan → Nov-Fév |1,502,774 |71.5% |Stable
+|Nov-Fév → Déc-Mar |1,508,636 |66.8% |Stable
+|Déc-Mar → Jan-Avr |1,478,654 |64.2% |Modéré
+|**Moyenne** |**1,496,688** |**67.5%** |**STABLE**
+|===
+
+#### Transactional
+[cols="1,1,1,1", options="header"]
+|===
+|Transition |Utilisateurs Communs |Taux de Rétention |Niveau de Stabilité
+
+|Oct-Jan → Nov-Fév |1,502,774 |85.9% |Très Stable
+|Nov-Fév → Déc-Mar |1,508,636 |82.7% |Très Stable
+|Déc-Mar → Jan-Avr |1,478,654 |82.0% |Très Stable
+|**Moyenne** |**1,496,688** |**83.5%** |**TRÈS STABLE**
+|===
+
+#### Price Affinity
+[cols="1,1,1,1", options="header"]
+|===
+|Transition |Utilisateurs Communs |Taux de Rétention |Niveau de Stabilité
+
+|Oct-Jan → Nov-Fév |1,502,774 |75.6% |Stable
+|Nov-Fév → Déc-Mar |1,508,636 |75.4% |Stable
+|Déc-Mar → Jan-Avr |1,478,654 |69.8% |Modéré
+|**Moyenne** |**1,496,688** |**73.6%** |**STABLE**
+|===
+
+=== Top 5 des Transitions par Catégorie
+
+#### Inter Session (Oct-Jan → Nov-Fév)
+[cols="1,1,1,1,1", options="header"]
+|===
+|Rang |Transition |Utilisateurs |Pourcentage |Type
+
+|1 |Cluster 0 → 0 |449,485 |29.9% |Stable
+|2 |Cluster 4 → 4 |199,310 |13.3% |Stable
+|3 |Cluster 3 → 3 |162,568 |10.8% |Stable
+|4 |Cluster 5 → 5 |112,212 |7.5% |Stable
+|5 |Cluster 1 → 1 |87,546 |5.8% |Stable
+|===
+
+#### Transactional (Oct-Jan → Nov-Fév)
+[cols="1,1,1,1,1", options="header"]
+|===
+|Rang |Transition |Utilisateurs |Pourcentage |Type
+
+|1 |Cluster 2 → 2 |733,693 |48.8% |Stable
+|2 |Cluster 0 → 0 |336,182 |22.4% |Stable
+|3 |Cluster 5 → 5 |97,275 |6.5% |Stable
+|4 |Cluster 4 → 4 |76,423 |5.1% |Stable
+|5 |Cluster 2 → 0 |58,991 |3.9% |Migration
+|===
+
+#### Price Affinity (Oct-Jan → Nov-Fév)
+[cols="1,1,1,1,1", options="header"]
+|===
+|Rang |Transition |Utilisateurs |Pourcentage |Type
+
+|1 |Cluster 2 → 2 |599,607 |39.9% |Stable
+|2 |Cluster 0 → 0 |191,954 |12.8% |Stable
+|3 |Cluster 1 → 1 |171,247 |11.4% |Stable
+|4 |Cluster 3 → 3 |84,366 |5.6% |Stable
+|5 |Cluster 0 → 2 |75,546 |5.0% |Migration
+|===
+
+=== Analyse des Patterns de Migration
+
+#### Principales Migrations Observées
+[cols="1,1,1,1", options="header"]
+|===
+|Catégorie |Migration Principale |Volume |Interprétation
+
+|Price Affinity |Cluster 0 → 2 |~75K users |Chasseurs promotions → Standards
+|Transactional |Cluster 2 → 0 |~59K users |Occasionnels → Modérés
+|Inter Session |Distribution diffuse |Variable |Pas de pattern dominant
+|===
+
+#### Tendance Temporelle des Rétentions
+[cols="1,1,1,1,1", options="header"]
+|===
+|Catégorie |Période 1→2 |Période 2→3 |Période 3→4 |Tendance
+
+|Transactional |85.9% |82.7% |82.0% |Baisse légère
+|Price Affinity |75.6% |75.4% |69.8% |Baisse progressive
+|Inter Session |71.5% |66.8% |64.2% |Baisse continue
+|===
+
+== 6. Glossaire des Métriques
+
+=== Métriques de Qualité du Clustering
+
+#### Silhouette Score
+* **Plage** : [-1, 1]
+* **Interprétation** : Mesure la cohésion intra-cluster vs séparation inter-cluster
+* **Seuils** :
+  - > 0.5 : Excellent clustering
+  - 0.3-0.5 : Bon clustering
+  - < 0.3 : Clustering faible
+* **Calcul** : Moyenne des scores individuels de silhouette
+
+#### Davies-Bouldin Index
+* **Plage** : [0, +∞]
+* **Interprétation** : Similarité moyenne entre clusters
+* **Seuils** :
+  - < 1.0 : Très bon clustering
+  - 1.0-2.0 : Bon clustering
+  - > 2.0 : Clustering faible
+* **Principe** : Plus proche de 0 = meilleur
+
+#### Calinski-Harabasz Score
+* **Plage** : [0, +∞]
+* **Interprétation** : Ratio variance inter-cluster / variance intra-cluster
+* **Principe** : Plus élevé = meilleur
+* **Note** : Pas de seuil absolu, comparaison relative
+
+=== Métriques de Stabilité
+
+#### Variance de Distribution
+* **Calcul** : Variance des pourcentages de chaque cluster à travers les périodes
+* **Seuils** :
+  - < 1% : Très Stable
+  - 1-5% : Stable
+  - > 5% : Instable
+
+#### Taux de Rétention
+* **Calcul** : % d'utilisateurs restant dans le même cluster entre 2 périodes
+* **Seuils** :
+  - > 80% : Très Stable
+  - 60-80% : Stable
+  - < 60% : Instable
+
+=== Paramètres d'Échantillonnage
+
+#### Échantillonnage Stratifié pour Silhouette Score
+* **Taille cible** : 50,000 utilisateurs
+* **Méthode** : Échantillonnage proportionnel par cluster
+* **Raison** : Optimisation computationnelle pour grandes données
+* **Impact** : Représentatif de la population totale
